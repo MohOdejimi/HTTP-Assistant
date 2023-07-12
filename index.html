@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>HTTP Assistant</title>
+  
+  <!-- HTML -->
+  
+  <!-- Custom Styles -->
+  
+  <link rel="stylesheet" href="style.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=PT+Sans&display=swap');
+  </style>
+  <script src="https://kit.fontawesome.com/102bc8442d.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <!-- Project -->
+  <header>
+    <div>
+      <h4><a href = '#'>HA<span><i class="fa-solid fa-server"></i></span></a></h4>
+    </div>
+    <div class = 'header-icons'>
+      
+    </div>
+  </header>
+  
+  
+  <p class = 'open-paragraph'>HTTP ASSISTANT is an open platform that enable developers and engineers to make API requests and get responses at the click of a button.</p>
+  
+  <p class = 'paragraph2'>Open WorkSpace Engine.</p>
+  <!----input--->
+  
+  <section class = 'main'>
+    <form>
+     <div class = 'requests'>
+        <p class = 'scroll'>Request<i id = 'up' class="fa-solid fa-angle-up"></i><i id = 'down' class="fa-solid fa-angle-down"></i></p>
+        <nav>
+          <ul>
+            <li class = 'get'>GET</li>
+            <li class = 'post'>POST</li>
+            <li class = 'put'>PUT</li>
+            <li class = 'delete'>DELETE</li>
+          </ul>
+        </nav>
+     </div>
+     <input type='text' class='url' placeholder="Enter HTTP address">
+     <button type='submit'>SEND</button>
+    </form>
+  </section>
+  
+  <script src="main.js"></script>
+</body>
+</html>
