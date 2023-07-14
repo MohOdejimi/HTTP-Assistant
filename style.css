@@ -42,6 +42,7 @@ header div span {
 .main {
   display: none;
   padding: 2rem;
+  font-family: PT sans;
 }
 form {
   display: flex;
@@ -49,10 +50,10 @@ form {
 }
 form input {
   flex: 0.75;
-  border: none;
+  border: 1px solid grey;
   outline: none;
   padding: .4rem;
-  background: #094044;
+  background: #171717;
   font-family: PT sans;
   color: white;
   max-height: 1.5rem;
@@ -65,8 +66,8 @@ form input::placeholder {
 form button {
   flex: 0.15;
   font-size: .65rem;
-  background: #d84f2a;
-  border: none;
+  background: #102937;
+  border: 1px solid grey;
   outline: none;
   color: whitesmoke;
   font-family: PT sans;
@@ -83,25 +84,90 @@ form i {
 .scroll {
   font-size: .75rem;
   color: whitesmoke;
+  border: 1px solid grey;
+  border-right: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 1ch;
+  padding: .7ch 0ch .6ch .8ch;
 }
 #up, #down {
-  padding-left: .5ch;
-  padding-right: 1ch;
-  cursor: pointer;
+  padding: .4ch .5ch 0ch 2ch;
 }
 #up {
   display: none;
 }
-nav {
+nav ul {
+  border: 1px solid grey;
+  border-top: 1px solid #171717;
   display: none;
 }
 nav ul li{
   list-style-type: none;
   font-size: .75rem;
   color: whitesmoke;
-  margin-top: .5rem;
+  margin-top: .4rem;
+  padding-left: .8ch;
+}
+
+li:hover, #up:hover, #down:hover{
+  cursor: pointer;
+}
+
+.requestTab {
+  margin-top: 2rem;
+  font-family: PT sans;
+}
+.title {
+  display: flex;
+}
+.requestTab h4 {
+  font-size: .6rem;
+  color: white;
+  border: 1px solid grey;
+  padding: .2rem .4rem;
+}
+.requestTab h4:hover {
+  color: #0b7b9e;
+  cursor: pointer;
+}
+.params {
+  padding: 1rem 0rem;
+  display: none;
+}
+.params div {
+  display: flex;
+  padding-left: .7rem;
+}
+.params input::placeholder {
+  color: white;
+  padding-left: 0.4rem;
+  font-size: .6rem;
+}
+.params input {
+  padding: .3rem;
+  font-size: .7rem;
+  color: whitesmoke;
+  outline: none;
+  width: 40%;
+  
+}
+.params div button {
+  width: 20%;
+  color: red;
+  font-size: .7rem;
+}
+.params input, .params button {
+  background: inherit;
+  border: 1px solid grey;
+  font-family: PT sans;
+}
+.add {
+  margin-top: .7rem;
+  margin-left: .7rem;
+  outline: none;
+  color: seagreen;
+  font-size: .65rem;
+  padding: .3rem;
+  font-family: PT sans;
 }

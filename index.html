@@ -38,8 +38,8 @@
   <section class = 'main'>
     <form>
      <div class = 'requests'>
-        <p class = 'scroll'>Request<i id = 'up' class="fa-solid fa-angle-up"></i><i id = 'down' class="fa-solid fa-angle-down"></i></p>
         <nav>
+          <p class = 'scroll'><span class = 'method'>REQ</span><i id = 'up' class="fa-solid fa-angle-up"></i><i id = 'down' class="fa-solid fa-angle-down"></i></p>
           <ul>
             <li class = 'get'>GET</li>
             <li class = 'post'>POST</li>
@@ -48,9 +48,26 @@
           </ul>
         </nav>
      </div>
-     <input type='text' class='url' placeholder="Enter HTTP address">
+     <input type='url' class='url' placeholder="Enter HTTP address">
      <button type='submit'>SEND</button>
     </form>
+    
+    <section class = 'requestTab'>
+      <div class = 'title'>
+        <h4 class = 'paramsTab'>Query Params</h4>
+        <h4 class = 'reqHeader'>Headers</h4>
+        <h4 class = 'reqJson'>JSON</h4>
+      </div>
+    <div class = 'params'>
+      <div class = 'keysAndValues'>
+       <input type = 'text' placeholder="Key">
+       <input type = 'text' placeholder = 'Value'>
+       <button type = 'submit'>Remove</button>
+      </div>
+
+      <button class = 'add' type = 'submit'>Add</button>
+    </div>
+      
   </section>
   
   <script src="main.js"></script>

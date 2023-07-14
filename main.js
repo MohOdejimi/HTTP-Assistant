@@ -1,21 +1,86 @@
 // Selectors 
+const body = document.body
 const open = document.querySelector('.paragraph2')
 const paragraph = document.querySelector('.open-paragraph')
 const main = document.querySelector('.main')
 const button = document.querySelector('button')
 const up = document.getElementById('up')
 const down = document.getElementById('down')
-const lists = document.querySelector('nav')
+const lists = document.querySelector('nav ul')
+
+// HTTP methods 
+const methods = document.querySelector('.method'
+)
+
+const geT = document.querySelector('.get')
+const post = document.querySelector('.post')
+const del = document.querySelector('.delete')
+const put = document.querySelector('.put')
+
+// Requests
+const paramsTab = document.querySelector('.paramsTab')
+const reqheader = document.querySelector('.reqHeader')
+const reqJson = document.querySelector('.reqJson')
+const params = document.querySelector('.params')
+const keysAndValues = document.querySelector('.keysAndValues')
+const add = document.querySelector('.add')
+
+add.addEventListener('click', (e) => {
+  e.preventDefault()
+  let section = document.createElement('div')
+  section.insertAdjacentHTML = `${keysAndValues}`
+  console.log(section)
+  add.before(section)
+})
+console.log(keysAndValues)
+
+paramsTab.addEventListener('click', () => {
+  params.style.display = 'block'
+})
 
 
 
 
+
+
+
+
+
+geT.addEventListener('click', () => {
+  const getReq = geT.innerText
+  methods.innerHTML = getReq
+  lists.style.display = 'none'
+  up.style.display = 'none'
+  down.style.display = 'block'
+})
+post.addEventListener('click', () => {
+  const postReq = post.innerText
+  methods.innerHTML = postReq
+  lists.style.display = 'none'
+  up.style.display = 'none'
+  down.style.display = 'block'
+})
+put.addEventListener('click', () => {
+  const putReq = put.innerText
+  methods.innerHTML = putReq
+  lists.style.display = 'none'
+  up.style.display = 'none'
+  down.style.display = 'block'
+})
+del.addEventListener('click', () => {
+  const delReq = del.innerText
+  methods.innerHTML = delReq
+  lists.style.display = 'none'
+  up.style.display = 'none'
+  down.style.display = 'block'
+})
 
 
 open.addEventListener('click', () => {
   paragraph.style.display = 'none'
   open.style.display = 'none'
   main.style.display = 'block'
+  body.style.background = '#171717'
 })
 
 down.addEventListener('click', () => {
@@ -29,11 +94,11 @@ up.addEventListener('click', () => {
   down.style.display = 'block'
 })
 button.addEventListener('click', (e) => {
-  e.preventDefault()
+  //e.preventDefault()
   
 })
 
-function collectRequestProperties(url) {
+/*function collectRequestProperties(url) {
   // Split the URL into base URL and query string
   const [baseUrl, queryString] = url.split('?');
 
@@ -70,3 +135,4 @@ function collectRequestProperties(url) {
 
 const url = "https://example.com?param1=value1&param2=value2";
 const requestProperties = collectRequestProperties(url);
+console.log(requestProperties)*/
