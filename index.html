@@ -49,27 +49,55 @@
         </nav>
      </div>
      <input type='url' class='url' placeholder="Enter HTTP address">
-     <button type='submit'>SEND</button>
+     <button class = 'sendButton' type='submit'>SEND</button>
     </form>
     
     <section class = 'requestTab'>
       <div class = 'title'>
-        <h4 class = 'paramsTab'>Query Params</h4>
-        <h4 class = 'reqHeader'>Headers</h4>
+        <h4 id = 'paramsTab'>Query Params</h4>
+        <h4 id = 'reqHeader'>Headers</h4>
         <h4 class = 'reqJson'>JSON</h4>
       </div>
-    <div class = 'params'>
-      <div class = 'keysAndValues'>
-       <input type = 'text' placeholder="Key">
-       <input type = 'text' placeholder = 'Value'>
-       <button type = 'submit'>Remove</button>
+    <div id="queryParametersContainer">
+      <div class="queryParam">
+        <input type="text" class="keyInput" placeholder="Key">
+        <input type="text" class="valueInput" placeholder="Value">
+        <button id = 'remove' class="remove" type="button">Remove</button>
       </div>
-
-      <button class = 'add' type = 'submit'>Add</button>
+      <button id="addQueryParamButton" type="button">Add</button>
     </div>
-      
+    <div class = 'requestjson'>
+       <div class = 'json-editor'>
+        <textarea id="jsonInput"></textarea>
+       <div>
+        <button id="saveButton">Save</button>
+        <button id="clearButton">Clear</button>
+       </div>
+      </div>
+    </div>  
+    
+    
+    <h3>Response</h3>
+    <div class = 'response-data'>
+      <p>Status: <span class = 'status'></span></p>
+      <p>Time: <span class = 'time'></span></p>
+      <p>Size: <span class = 'size'></span></p>
+    </div>
+    <div class = 'response-title'>
+      <h4 class = 'body' id = 'body'>Body</h4>
+      <h4 class = 'resHeader'>Header</h4>
+    </div>
+    
+    
+    
+    <!----Response--->
+    
+   <textarea id="responseField" readonly></textarea>
+    
+     
   </section>
   
   <script src="main.js"></script>
 </body>
 </html>
+

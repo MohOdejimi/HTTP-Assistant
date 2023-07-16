@@ -3,7 +3,6 @@
   margin: 0;
   box-sizing: border-box;
 }
-
 body {
     font-family: PT sans;
     background-color: #091d26;
@@ -25,7 +24,6 @@ header i {
 header div span {
   margin-left: .5rem;
 }
-
 .open-paragraph{
   padding: 2rem;
   margin-top: 3rem;
@@ -38,7 +36,6 @@ header div span {
   color: white;
   text-decoration-color: #d84f2a;
 }
-
 .main {
   display: none;
   padding: 2rem;
@@ -72,6 +69,10 @@ form button {
   color: whitesmoke;
   font-family: PT sans;
   max-height: 1.5rem;
+}
+form button:hover {
+  text-decoration-line: underline;
+  cursor: pointer;
 }
 form i {
   color: white;
@@ -109,11 +110,9 @@ nav ul li{
   margin-top: .4rem;
   padding-left: .8ch;
 }
-
 li:hover, #up:hover, #down:hover{
   cursor: pointer;
 }
-
 .requestTab {
   margin-top: 2rem;
   font-family: PT sans;
@@ -121,30 +120,34 @@ li:hover, #up:hover, #down:hover{
 .title {
   display: flex;
 }
+#paramsTab {
+  border: 1px solid grey;
+  color: white;
+  border-bottom: none;
+}
 .requestTab h4 {
   font-size: .6rem;
-  color: white;
-  border: 1px solid grey;
+  color: #0b7b9e;
   padding: .2rem .4rem;
 }
+
 .requestTab h4:hover {
-  color: #0b7b9e;
   cursor: pointer;
 }
-.params {
-  padding: 1rem 0rem;
-  display: none;
+#queryParametersContainer {
+  padding: .7rem 0rem;
+  border: 1px solid grey;
 }
-.params div {
+#queryParametersContainer div {
   display: flex;
-  padding-left: .7rem;
+  padding: 0rem .7rem;
 }
-.params input::placeholder {
+#queryParametersContainer input::placeholder {
   color: white;
   padding-left: 0.4rem;
   font-size: .6rem;
 }
-.params input {
+#queryParametersContainer input {
   padding: .3rem;
   font-size: .7rem;
   color: whitesmoke;
@@ -152,22 +155,104 @@ li:hover, #up:hover, #down:hover{
   width: 40%;
   
 }
-.params div button {
+#queryParametersContainer div button {
   width: 20%;
-  color: red;
+  color: #ef3a2f;
   font-size: .7rem;
 }
-.params input, .params button {
+#queryParametersContainer input, #queryParametersContainer button {
   background: inherit;
   border: 1px solid grey;
   font-family: PT sans;
+  outline: none;
 }
-.add {
+#addQueryParamButton {
   margin-top: .7rem;
   margin-left: .7rem;
   outline: none;
   color: seagreen;
   font-size: .65rem;
-  padding: .3rem;
+  padding: .25rem;
   font-family: PT sans;
+}
+ #addQueryParamButton:hover {
+  cursor: pointer;
+  color: white;
+  background: #0ad488;
+}
+#remove:hover {
+  color: white;
+  background: #e63946;
+}
+.requestjson {
+  display: none;
+}
+.json-editor {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid grey;
+}
+#jsonInput {
+  flex: 1;
+  color: white;
+  font-size: .7rem;
+  margin: .5rem;
+  padding: .25rem;
+  padding-left: .5rem;
+  font-family: PT sans;
+  outline: none;
+  background: inherit;
+  resize: vertical;
+  min-height: 5rem;
+}
+.json-editor div {
+  margin-left: .5rem;
+  margin-bottom: .4rem;
+}
+.json-editor div button {
+  font-size: .65rem;
+  background: #102937;
+  border: 1px solid grey;
+  outline: none;
+  color: whitesmoke;
+  font-family: PT sans;
+  padding: .2rem;
+}
+
+
+h3 {
+  font-family: PT sans;
+  margin-top: 4rem;
+  color: white;
+}
+.response-data {
+  padding-top: .6rem;
+  display: flex;
+  font-size: .7rem;
+  gap: 1rem;
+  color: white;
+}
+.response-title {
+  padding-top: .6rem;
+  display: flex;
+  color: #0b7b9e;
+  font-size: .6rem;
+}
+
+#body {
+  border: 1px solid grey;
+  color: white;
+  border-bottom: none;
+}
+#responseField{
+  font-family: PT sans;
+  padding: 1rem;
+  font-size: 0.7rem;
+  color: white;
+  word-wrap: break-word;
+  width: 100%;
+  min-height: 10rem;
+  resize: vertical;
+  background: #212121;
+  border: 1px solid grey;
 }

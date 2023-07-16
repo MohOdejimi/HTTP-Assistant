@@ -18,27 +18,47 @@ const del = document.querySelector('.delete')
 const put = document.querySelector('.put')
 
 // Requests
-const paramsTab = document.querySelector('.paramsTab')
-const reqheader = document.querySelector('.reqHeader')
-const reqJson = document.querySelector('.reqJson')
-const params = document.querySelector('.params')
-const keysAndValues = document.querySelector('.keysAndValues')
-const add = document.querySelector('.add')
 
-add.addEventListener('click', (e) => {
-  e.preventDefault()
-  let section = document.createElement('div')
-  section.insertAdjacentHTML = `${keysAndValues}`
-  console.log(section)
-  add.before(section)
-})
-console.log(keysAndValues)
+const reqheader = document.querySelector('#reqHeader')
+
+
+const params = document.querySelector('#queryParametersContainer')
+const paramsTab = document.querySelector('#paramsTab')
+const queryParam = document.querySelector('.queryParam')
+
+
+const jsonEditor = document.querySelector('.json-editor')
+const jsonInput = document.getElementById('jsonInput');
+const saveButton = document.getElementById('saveButton');
+const clearButton = document.getElementById('clearButton');
+const reqJson = document.querySelector('.reqJson')
+const jsonHeader = document.querySelector('.requestjson')
+
+const add = document.querySelector('#addQueryParamButton')
+const removeButton = document.querySelector('.remove')
+
+
+
+
 
 paramsTab.addEventListener('click', () => {
   params.style.display = 'block'
+  reqJson.style.color = '#0b7b9e'
+  reqJson.style.border = 'none'
+  jsonHeader.style.display = 'none'
+  paramsTab.style.color = 'white'
+  paramsTab.style.border = '1px solid grey'
+  paramsTab.style.borderBottom = 'none'
 })
-
-
+reqJson.addEventListener('click', () => {
+  params.style.display = 'none'
+  paramsTab.style.border = 'none'
+  reqJson.style.border = '1px solid grey'
+  reqJson.style.borderBottom = 'none'
+  reqJson.style.color = 'white'
+  paramsTab.style.color = '#0b7b8e'
+  jsonHeader.style.display = 'block'
+})
 
 
 
@@ -93,10 +113,158 @@ up.addEventListener('click', () => {
   up.style.display = 'none'
   down.style.display = 'block'
 })
-button.addEventListener('click', (e) => {
-  //e.preventDefault()
-  
+    // JavaScript code to handle the interface
+    
+
+    // Load JSON data from local storage (if available)
+    const savedJson = localStorage.getItem('json');
+    if (savedJson) {
+      jsonInput.value = savedJson;
+    }
+
+    // Event listener for the save button
+    saveButton.addEventListener('click', () => {
+      const json = jsonInput.value;
+      try {
+        const parsedJson = JSON.parse(json);
+        // Perform any desired actions with the parsed JSON
+        console.log(parsedJson);
+
+        // Save JSON data to local storage
+        localStorage.setItem('json', json);
+      } catch (error) {
+        console.error('Invalid JSON:', error);
+      }
+    });
+
+    // Event listener for the clear button
+    clearButton.addEventListener('click', () => {
+      jsonInput.value = '';
+      localStorage.removeItem('json');
+    });
+    
+  const baseUrlInput = document.querySelector('.url');
+  const queryParametersContainer = document.getElementById('queryParametersContainer');
+  const addQueryParamButton = document.getElementById('addQueryParamButton');
+
+// Function to update the input field with query parameters
+  function updateQueryString() {
+    let queryString = '';
+    const queryParamInputs = Array.from(queryParametersContainer.getElementsByClassName('queryParam'));
+    queryParamInputs.forEach((queryParamInput, index) => {
+    const keyInput = queryParamInput.getElementsByClassName('keyInput')[0];
+    const valueInput = queryParamInput.getElementsByClassName('valueInput')[0];
+    const key = encodeURIComponent(keyInput.value);
+    const value = encodeURIComponent(valueInput.value);
+    queryString += (index === 0 ? '?' : '&') + `${key}=${value}`;
+  });
+  baseUrlInput.value = baseUrlInput.value.split('?')[0] + queryString;
+}
+
+  // Event listener for adding a query parameter
+  add.addEventListener('click', () => {
+    const queryParamInput = document.createElement('div');
+   queryParamInput.classList.add('queryParam');
+   queryParamInput.innerHTML = `
+     <input type="text" class="keyInput"  placeholder="Key">
+     <input type="text" class="valueInput"  placeholder="Value">
+     <button id = 'remove' class="remove" type="button" >Remove</button>
+
+  `;
+  queryParametersContainer.insertBefore(queryParamInput, add);
+
+  // Add event listeners to update query string when key or value input is edited
+  const keyInput = queryParamInput.getElementsByClassName('keyInput')[0];
+  const valueInput = queryParamInput.getElementsByClassName('valueInput')[0];
+  keyInput.addEventListener('input', updateQueryString);
+  valueInput.addEventListener('input', updateQueryString);
+
+  // Update query string on addition of new query parameter
+  updateQueryString();
+});
+
+// Event listener for removing a query parameter
+  queryParametersContainer.addEventListener('click', (e) => {
+  if (e.target.classList.contains('remove')) {
+    e.target.parentNode.remove();
+    updateQueryString();
+  }
+});
+
+const resBody = document.querySelector('.body')
+const resHeader = document.querySelector('.resHeader')
+const responseField = document.querySelector('#responseField')
+
+
+resBody.addEventListener('click', () => {
+  resBody.style.color = 'white'
+  resBody.style.border = '1px solid grey'
+  resBody.style.borderBottom = 'none'
+  responseField.style.display = 'block'
+  resHeader.style.color = '#0b7b9e'
+  resHeader.style.border = 'none'
 })
+resHeader.addEventListener('click', () => {
+  responseField.style.display = 'none'
+  resHeader.style.color = 'white'
+  resBody.style.color = '#0b7b9e'
+  resBody.style.border = 'none'
+  resHeader.style.border = '1px solid grey'
+  resHeader.style.borderBottom = 'none'
+})
+
+
+
+async function getResponse(url) {
+  try {
+    const startTime = performance.now(); // Start time measurement
+    const response = await fetch(url);
+    const endTime = performance.now(); // End time measurement
+
+    const responseJson = await response.json();
+    responseJson.status = response.status;
+    responseJson.size = response.headers.get('content-length');
+    responseJson.time = endTime - startTime;
+
+    return { response: responseJson, status: response.status, size: response.headers.get('content-length'), time: endTime - startTime };
+  } catch (error) {
+    console.error('Error:', error);
+    return { error: error.message };
+  }
+}
+
+
+
+
+// Event listener for sending the request
+const sendButton = document.querySelector('.sendButton');
+sendButton.addEventListener('click', async (e) => {
+  e.preventDefault();
+  // Perform the HTTP request with the baseUrlInput value
+  if (methods.innerHTML === 'GET') {
+    try {
+      const response = await getResponse(baseUrlInput.value);
+      console.log(response);
+      const responseField = document.querySelector('#responseField');
+      responseField.value = JSON.stringify(response.response[0], null, 2);
+      const status = document.querySelector('.status')
+      status.innerText = response.status
+      const time = document.querySelector('.time')
+      time.innerText = `${(response.time/100).toFixed()}ms`
+      time
+      const size = document.querySelector('.size')
+      size.innerText = response.size
+      console.log(response)
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  console.log(baseUrlInput.value);
+});
+
+
+// REQUEST HEADER and handle errors 
+
 
 /*function collectRequestProperties(url) {
   // Split the URL into base URL and query string
@@ -130,9 +298,8 @@ button.addEventListener('click', (e) => {
     userAgent,
     referrer,
   };
-}
+}*/
 
 
-const url = "https://example.com?param1=value1&param2=value2";
-const requestProperties = collectRequestProperties(url);
-console.log(requestProperties)*/
+      
+     // https://api.dictionaryapi.dev/api/v2/entries/en/hello
