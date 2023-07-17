@@ -20,6 +20,7 @@ const put = document.querySelector('.put')
 // Requests
 
 const reqheader = document.querySelector('#reqHeader')
+const reqHeaderField = document.getElementById('requestHeaderField')
 
 
 const params = document.querySelector('#queryParametersContainer')
@@ -29,6 +30,7 @@ const queryParam = document.querySelector('.queryParam')
 
 const jsonEditor = document.querySelector('.json-editor')
 const jsonInput = document.getElementById('jsonInput');
+
 const saveButton = document.getElementById('saveButton');
 const clearButton = document.getElementById('clearButton');
 const reqJson = document.querySelector('.reqJson')
@@ -49,6 +51,9 @@ paramsTab.addEventListener('click', () => {
   paramsTab.style.color = 'white'
   paramsTab.style.border = '1px solid grey'
   paramsTab.style.borderBottom = 'none'
+  reqHeaderField.style.display = 'none'
+  reqheader.style.border = 'none'
+  reqheader.style.color = '#0b7b8e'
 })
 reqJson.addEventListener('click', () => {
   params.style.display = 'none'
@@ -58,9 +63,23 @@ reqJson.addEventListener('click', () => {
   reqJson.style.color = 'white'
   paramsTab.style.color = '#0b7b8e'
   jsonHeader.style.display = 'block'
+  reqHeaderField.style.display = 'none'
+  reqheader.style.border = 'none'
+  reqheader.style.color = '#0b7b8e'
 })
 
-
+reqheader.addEventListener('click', () => {
+  reqHeaderField.style.display = 'block'
+  params.style.display = 'none'
+  jsonHeader.style.display = 'none'
+  reqheader.style.color = 'white'
+  reqheader.style.border = '1px solid grey'
+  reqheader.style.borderBottom = 'none'
+  paramsTab.style.color = '#0b7b8e'
+  reqJson.style.color = '#0b7b8e'
+  paramsTab.style.border = 'none'
+  reqJson.style.border = 'none'
+})
 
 
 
@@ -113,7 +132,7 @@ up.addEventListener('click', () => {
   up.style.display = 'none'
   down.style.display = 'block'
 })
-    // JavaScript code to handle the interface
+    
     
 
     // Load JSON data from local storage (if available)
@@ -194,7 +213,7 @@ up.addEventListener('click', () => {
 const resBody = document.querySelector('.body')
 const resHeader = document.querySelector('.resHeader')
 const responseField = document.querySelector('#responseField')
-
+const responseHeaderField = document.querySelector('#responseHeaderField')
 
 resBody.addEventListener('click', () => {
   resBody.style.color = 'white'
@@ -203,6 +222,7 @@ resBody.addEventListener('click', () => {
   responseField.style.display = 'block'
   resHeader.style.color = '#0b7b9e'
   resHeader.style.border = 'none'
+  responseHeaderField.style.display = 'none'
 })
 resHeader.addEventListener('click', () => {
   responseField.style.display = 'none'
@@ -211,7 +231,10 @@ resHeader.addEventListener('click', () => {
   resBody.style.border = 'none'
   resHeader.style.border = '1px solid grey'
   resHeader.style.borderBottom = 'none'
+  responseHeaderField.style.display = 'block'
 })
+
+
 
 
 
@@ -225,49 +248,31 @@ async function getResponse(url) {
     responseJson.status = response.status;
     responseJson.size = response.headers.get('content-length');
     responseJson.time = endTime - startTime;
+    responseJson.headers = {};
 
-    return { response: responseJson, status: response.status, size: response.headers.get('content-length'), time: endTime - startTime };
+    response.headers.forEach((value, name) => {
+      responseJson.headers[name] = value;
+    });
+
+    return responseJson;
   } catch (error) {
-    console.error('Error:', error);
-    return { error: error.message };
+    const errorResponse = {
+      error: error.message,
+      headers: {}
+    };
+    
+    if (error.response && error.response.headers) {
+      error.response.headers.forEach((value, name) => {
+        errorResponse.headers[name] = value;
+      });
+    }
+
+    return errorResponse;
+    
   }
 }
 
-
-
-
-// Event listener for sending the request
-const sendButton = document.querySelector('.sendButton');
-sendButton.addEventListener('click', async (e) => {
-  e.preventDefault();
-  // Perform the HTTP request with the baseUrlInput value
-  if (methods.innerHTML === 'GET') {
-    try {
-      const response = await getResponse(baseUrlInput.value);
-      console.log(response);
-      const responseField = document.querySelector('#responseField');
-      responseField.value = JSON.stringify(response.response[0], null, 2);
-      const status = document.querySelector('.status')
-      status.innerText = response.status
-      const time = document.querySelector('.time')
-      time.innerText = `${(response.time/100).toFixed()}ms`
-      time
-      const size = document.querySelector('.size')
-      size.innerText = response.size
-      console.log(response)
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
-  console.log(baseUrlInput.value);
-});
-
-
-// REQUEST HEADER and handle errors 
-
-
-/*function collectRequestProperties(url) {
-  // Split the URL into base URL and query string
+function getRequestHeader(url) {
   const [baseUrl, queryString] = url.split('?');
 
   // Get query parameters
@@ -298,8 +303,60 @@ sendButton.addEventListener('click', async (e) => {
     userAgent,
     referrer,
   };
-}*/
+}
 
-
+// Event listener for sending the request
+const sendButton = document.querySelector('.sendButton');
+sendButton.addEventListener('click', async (e) => {
+  e.preventDefault();
+  // Perform the HTTP request with the baseUrlInput value
+  if (methods.innerHTML === 'GET') {
+    const response = await getResponse(baseUrlInput.value);
+    const requestHeader = getRequestHeader(baseUrlInput.value)
+    console.log(requestHeader.baseUrl)
+    console.log(response)
+    try {
       
-     // https://api.dictionaryapi.dev/api/v2/entries/en/hello
+      const responseField = document.querySelector('#responseField');
+      if(response[0]) {
+        responseField.value = JSON.stringify(response[0], null, 2);
+      } else if (response) {
+        responseField.value = JSON.stringify(response, null, 2);
+      } else {
+        responseField.value = `An Error Occured: Check your Internet Connection and url input`
+      }
+      
+      const status = document.querySelector('.status')
+      if(response.status) {
+        status.innerText = response.status
+      } else {
+        status.innerText = ''
+      }
+     
+      const time = document.querySelector('.time')
+      if(response.time) {
+        time.innerText = `${(response.time/100).toFixed()}ms`
+      } else {
+        time.innerText = ''
+      }
+      
+      const size = document.querySelector('.size')
+      if(response.size) {
+        size.innerText = response.size
+      } else {
+        size.innerText = ''
+      }
+      
+      const headerUrl = document.querySelector('.baseurl')
+      headerUrl.innerText = requestHeader.baseUrl
+      const useragent = document.querySelector('.useragent')
+      useragent.innerText = requestHeader.userAgent
+    } catch (error) {
+      
+    }
+  }
+  console.log(baseUrlInput.value);
+});
+
+
+//https://api.dictionaryapi.dev/api/v2/entries/en/computer

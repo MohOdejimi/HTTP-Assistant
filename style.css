@@ -130,7 +130,10 @@ li:hover, #up:hover, #down:hover{
   color: #0b7b9e;
   padding: .2rem .4rem;
 }
-
+.useragent, .baseurl {
+  padding-left: .2rem;
+  color: #f9774b;
+}
 .requestTab h4:hover {
   cursor: pointer;
 }
@@ -244,15 +247,25 @@ h3 {
   color: white;
   border-bottom: none;
 }
-#responseField{
+#responseField, #responseHeaderField, #requestHeaderField{
   font-family: PT sans;
   padding: 1rem;
   font-size: 0.7rem;
   color: white;
+  outline: none;
   word-wrap: break-word;
   width: 100%;
-  min-height: 10rem;
+  min-height: 8rem;
   resize: vertical;
   background: #212121;
   border: 1px solid grey;
+}
+#responseHeaderField {
+  display: none;
+}
+#requestHeaderField {
+  background: inherit;
+  display: none;
+  min-height: 5rem;
+  padding-top: 0.5rem;
 }
