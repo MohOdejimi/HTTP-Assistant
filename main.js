@@ -18,15 +18,12 @@ const del = document.querySelector('.delete')
 const put = document.querySelector('.put')
 
 // Requests
-
 const reqheader = document.querySelector('#reqHeader')
 const reqHeaderField = document.getElementById('requestHeaderField')
-
 
 const params = document.querySelector('#queryParametersContainer')
 const paramsTab = document.querySelector('#paramsTab')
 const queryParam = document.querySelector('.queryParam')
-
 
 const jsonEditor = document.querySelector('.json-editor')
 const jsonInput = document.getElementById('jsonInput');
@@ -38,10 +35,6 @@ const jsonHeader = document.querySelector('.requestjson')
 
 const add = document.querySelector('#addQueryParamButton')
 const removeButton = document.querySelector('.remove')
-
-
-
-
 
 paramsTab.addEventListener('click', () => {
   params.style.display = 'block'
@@ -67,7 +60,6 @@ reqJson.addEventListener('click', () => {
   reqheader.style.border = 'none'
   reqheader.style.color = '#0b7b8e'
 })
-
 reqheader.addEventListener('click', () => {
   reqHeaderField.style.display = 'block'
   params.style.display = 'none'
@@ -80,10 +72,6 @@ reqheader.addEventListener('click', () => {
   paramsTab.style.border = 'none'
   reqJson.style.border = 'none'
 })
-
-
-
-
 
 geT.addEventListener('click', () => {
   const getReq = geT.innerText
@@ -114,14 +102,12 @@ del.addEventListener('click', () => {
   down.style.display = 'block'
 })
 
-
 open.addEventListener('click', () => {
   paragraph.style.display = 'none'
   open.style.display = 'none'
   main.style.display = 'block'
   body.style.background = '#171717'
 })
-
 down.addEventListener('click', () => {
   lists.style.display = 'block'
   up.style.display = 'block'
@@ -133,30 +119,23 @@ up.addEventListener('click', () => {
   down.style.display = 'block'
 })
     
-    
-
-    // Load JSON data from local storage (if available)
     const savedJson = localStorage.getItem('json');
     if (savedJson) {
       jsonInput.value = savedJson;
     }
-
-    // Event listener for the save button
     saveButton.addEventListener('click', () => {
       const json = jsonInput.value;
       try {
         const parsedJson = JSON.parse(json);
-        // Perform any desired actions with the parsed JSON
-        console.log(parsedJson);
-
-        // Save JSON data to local storage
+        
         localStorage.setItem('json', json);
       } catch (error) {
         console.error('Invalid JSON:', error);
+        const responseField = document.querySelector('#responseField')
+        responseField.value = `Invalid JSON:', ${error}`
       }
     });
 
-    // Event listener for the clear button
     clearButton.addEventListener('click', () => {
       jsonInput.value = '';
       localStorage.removeItem('json');
@@ -188,21 +167,17 @@ up.addEventListener('click', () => {
      <input type="text" class="keyInput"  placeholder="Key">
      <input type="text" class="valueInput"  placeholder="Value">
      <button id = 'remove' class="remove" type="button" >Remove</button>
-
   `;
   queryParametersContainer.insertBefore(queryParamInput, add);
 
-  // Add event listeners to update query string when key or value input is edited
   const keyInput = queryParamInput.getElementsByClassName('keyInput')[0];
   const valueInput = queryParamInput.getElementsByClassName('valueInput')[0];
   keyInput.addEventListener('input', updateQueryString);
   valueInput.addEventListener('input', updateQueryString);
 
-  // Update query string on addition of new query parameter
   updateQueryString();
 });
 
-// Event listener for removing a query parameter
   queryParametersContainer.addEventListener('click', (e) => {
   if (e.target.classList.contains('remove')) {
     e.target.parentNode.remove();
@@ -234,15 +209,13 @@ resHeader.addEventListener('click', () => {
   responseHeaderField.style.display = 'block'
 })
 
-
-
-
+// GET Response
 
 async function getResponse(url) {
   try {
-    const startTime = performance.now(); // Start time measurement
+    const startTime = performance.now(); 
     const response = await fetch(url);
-    const endTime = performance.now(); // End time measurement
+    const endTime = performance.now(); // 
 
     const responseJson = await response.json();
     responseJson.status = response.status;
@@ -275,7 +248,6 @@ async function getResponse(url) {
 function getRequestHeader(url) {
   const [baseUrl, queryString] = url.split('?');
 
-  // Get query parameters
   const queryParams = {};
   if (queryString) {
     const params = new URLSearchParams(queryString);
@@ -283,8 +255,6 @@ function getRequestHeader(url) {
       queryParams[key] = value;
     });
   }
-
-  // Get request headers
   const headers = {};
   const headerKeys = Object.keys(navigator.headers || navigator.allHeaders || {});
   headerKeys.forEach((key) => {
@@ -295,7 +265,6 @@ function getRequestHeader(url) {
   const userAgent = navigator.userAgent;
   const referrer = document.referrer;
 
-  // Return collected properties as an object
   return {
     baseUrl,
     queryParams,
@@ -309,15 +278,15 @@ function getRequestHeader(url) {
 const sendButton = document.querySelector('.sendButton');
 sendButton.addEventListener('click', async (e) => {
   e.preventDefault();
-  // Perform the HTTP request with the baseUrlInput value
-  if (methods.innerHTML === 'GET') {
-    const response = await getResponse(baseUrlInput.value);
+  
     const requestHeader = getRequestHeader(baseUrlInput.value)
-    console.log(requestHeader.baseUrl)
-    console.log(response)
+    const responseField = document.querySelector('#responseField');
+    
+  if (methods.innerHTML === 'GET') {
     try {
+      const response = await getResponse(baseUrlInput.value); 
+      const responseHeader = Object.entries(response.headers)
       
-      const responseField = document.querySelector('#responseField');
       if(response[0]) {
         responseField.value = JSON.stringify(response[0], null, 2);
       } else if (response) {
@@ -342,7 +311,7 @@ sendButton.addEventListener('click', async (e) => {
       
       const size = document.querySelector('.size')
       if(response.size) {
-        size.innerText = response.size
+        size.innerText = `${response.size}B`
       } else {
         size.innerText = ''
       }
@@ -351,12 +320,210 @@ sendButton.addEventListener('click', async (e) => {
       headerUrl.innerText = requestHeader.baseUrl
       const useragent = document.querySelector('.useragent')
       useragent.innerText = requestHeader.userAgent
-    } catch (error) {
       
+      const ul = document.createElement('ul')
+      
+      for(let i = 0; i < responseHeader.length; i++) {
+        const li = document.createElement('li')
+        for(let j = 0; j < responseHeader[i].length; j++) {
+         if (j % 2 === 0) {
+           const label = document.createElement('span');
+           label.textContent = `${responseHeader[i][j]}: `;
+           label.style.fontsSize = '1rem';
+         
+           const value = document.createElement('span');
+           value.textContent = responseHeader[i][j + 1];
+           value.style.fontSize = '.7rem'; 
+           value.style.color = '#f9774b';
+           value.style.paddingLeft = '.2rem'
+         
+           li.appendChild(label);
+           li.appendChild(value);
+         }
+        }
+        ul.appendChild(li)
+        responseHeaderField.innerHTML = ''
+        responseHeaderField.appendChild(ul)
+      }
+    } catch (error) {
+      responseField.value = `Error: ${error}`
     }
+  } 
+  if(methods.innerHTML === 'POST') {
+    const savedJson = localStorage.getItem('json');
+    if (savedJson) {
+      jsonInput.value = savedJson;
+    }
+    const json = jsonInput.value;
+    const parsedJson = JSON.parse(json);
+   
+    localStorage.setItem('json', json);
+  fetch(baseUrlInput.value, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(parsedJson)
+})
+  .then(response => {
+    const headers = Array.from(response.headers.entries());
+    const responseJson = response.json();
+    const status = response.status;
+    const size = response.headers.get('content-length');
+    const time = response.headers.get('x-response-time');
+    return Promise.all([headers, responseJson, status, size, time]);
+  })
+  .then(([headers, data, status, size, time]) => {
+    responseField.value = JSON.stringify(data, null, 2)
+     const statusTab = document.querySelector('.status')
+     if (status) {
+       statusTab.innerText = status
+     } else {
+       statusTab.innerText = ''
+     }
+    
+     const timeTab = document.querySelector('.time')
+     if (time) {
+       timeTab.innerText = `${(time/100).toFixed()}ms`
+     } else {
+       timeTab.innerText = ''
+     }
+    
+     const sizeTab = document.querySelector('.size')
+     if (size) {
+       sizeTab.innerText = `${size}B`
+     } else {
+       sizeTab.innerText = ''
+     }
+     
+     const ul = document.createElement('ul')
+     
+     for(let i = 0; i < headers.length; i++) {
+       
+        const li = document.createElement('li')
+        for(let j = 0; j < headers[i].length; j++) {
+         if (j % 2 === 0) {
+           const label = document.createElement('span');
+           label.textContent = `${headers[i][j]}: `;
+           label.style.fontsSize = '1rem';
+         
+           const value = document.createElement('span');
+           value.textContent = headers[i][j + 1];
+           value.style.fontSize = '.7rem'; 
+           value.style.color = '#f9774b';
+           value.style.paddingLeft = '.2rem'
+         
+           li.appendChild(label);
+           li.appendChild(value);
+         }
+        }
+        ul.appendChild(li)
+        responseHeaderField.innerHTML = ''
+        responseHeaderField.appendChild(ul)
+      }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    // Handle any errors
+    responseField.value = `Error: ${error}`
+  });
+
+  const headerUrl = document.querySelector('.baseurl')
+  headerUrl.innerText = requestHeader.baseUrl
+  const useragent = document.querySelector('.useragent')
+  useragent.innerText = requestHeader.userAgent
   }
-  console.log(baseUrlInput.value);
+  if(methods.innerHTML === 'PUT') {
+    const savedJson = localStorage.getItem('json');
+    if (savedJson) {
+      jsonInput.value = savedJson;
+    }
+    const json = jsonInput.value;
+    const parsedJson = JSON.parse(json);
+   
+    localStorage.setItem('json', json);
+    
+    fetch(baseUrlInput.value, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(parsedJson)
+    })
+    .then(response => {
+      const headers = Array.from(response.headers.entries())
+      const responseJson = response.json()
+      const status = response.status
+      const size = response.headers.get('content-length')
+      const time = response.headers.get('x-response-time')
+      return Promise.all([headers,responseJson, status, size, time])
+    })
+    .then(([headers, data, status, size, time]) => {
+      responseField.value = JSON.stringify(data, null, 2)
+      
+     const statusTab = document.querySelector('.status')
+     if (status) {
+       statusTab.innerText = status
+     } else {
+       statusTab.innerText = ''
+     }
+    
+     const timeTab = document.querySelector('.time')
+     if (time) {
+       timeTab.innerText = `${(time/100).toFixed()}ms`
+     } else {
+       timeTab.innerText = ''
+     }
+    
+     const sizeTab = document.querySelector('.size')
+     if (size) {
+       sizeTab.innerText = `${size}B`
+     } else {
+       sizeTab.innerText = ''
+     }
+     
+     const ul = document.createElement('ul')
+     
+     for(let i = 0; i < headers.length; i++) {
+       
+        const li = document.createElement('li')
+        for(let j = 0; j < headers[i].length; j++) {
+         if (j % 2 === 0) {
+           const label = document.createElement('span');
+           label.textContent = `${headers[i][j]}: `;
+           label.style.fontsSize = '1rem';
+         
+           const value = document.createElement('span');
+           value.textContent = headers[i][j + 1];
+           value.style.fontSize = '.7rem'; 
+           value.style.color = '#f9774b';
+           value.style.paddingLeft = '.2rem'
+         
+           li.appendChild(label);
+           li.appendChild(value);
+         }
+        }
+        ul.appendChild(li)
+        responseHeaderField.innerHTML = ''
+        responseHeaderField.appendChild(ul)
+      }
+    })
+    .catch(error => {
+    console.error('Error:', error);
+    
+    responseField.value = `Error: ${error}`
+  });
+
+  const headerUrl = document.querySelector('.baseurl')
+  headerUrl.innerText = requestHeader.baseUrl
+  const useragent = document.querySelector('.useragent')
+  useragent.innerText = requestHeader.userAgent
+  }
 });
 
 
 //https://api.dictionaryapi.dev/api/v2/entries/en/computer
+// https://jsonplaceholder.typicode.com/posts
+
+    // Current Weather
+   // https://api.openweathermap.org/data/2.5/weather?q=lagos&appid=6f54916aa6f7ec8753539793bf70288b&units=metric
