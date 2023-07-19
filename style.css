@@ -54,6 +54,7 @@ form input {
   font-family: PT sans;
   color: white;
   max-height: 1.5rem;
+  font-size: .7rem;
 }
 form input::placeholder {
   padding-left: 0.5rem;
@@ -83,17 +84,18 @@ form i {
   align-items: center;
 }
 .scroll {
-  font-size: .75rem;
+  font-size: .7rem;
   color: whitesmoke;
   border: 1px solid grey;
   border-right: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: .7ch 0ch .6ch .8ch;
+  padding: .7ch 0ch .7ch .8ch;
 }
 #up, #down {
   padding: .4ch .5ch 0ch 2ch;
+  font-size: .7rem;
 }
 #up {
   display: none;
