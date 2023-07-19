@@ -519,11 +519,81 @@ sendButton.addEventListener('click', async (e) => {
   const useragent = document.querySelector('.useragent')
   useragent.innerText = requestHeader.userAgent
   }
+  if(methods.innerHTML === 'DELETE') {
+    
+     fetch(baseUrlInput.value, {
+  method: 'DELETE',
+})
+  .then((response) => {
+    if (response.ok) {
+      const headers = Array.from(response.headers.entries())
+      const responseJson = response.json()
+      const status = response.status
+      const size = response.headers.get('content-length')
+      const time = response.headers.get('x-response-time')
+      return Promise.all([headers, responseJson, status, size, time])
+    } 
+  })
+  .then(([headers, data, status, size, time]) => {
+    responseField.value = 'Item deleted Successfully'
+    const statusTab = document.querySelector('.status')
+    
+    if (status) {
+      statusTab.innerText = status
+    } else {
+      statusTab.innerText = ''
+    }
+    
+    const timeTab = document.querySelector('.time')
+    if (time) {
+      timeTab.innerText = `${(time/100).toFixed()}ms`
+    } else {
+      timeTab.innerText = ''
+    }
+    
+    const sizeTab = document.querySelector('.size')
+    if (size) {
+      sizeTab.innerText = `${size}B`
+    } else {
+      sizeTab.innerText = ''
+    }
+    
+    const ul = document.createElement('ul')
+    
+    for (let i = 0; i < headers.length; i++) {
+    
+      const li = document.createElement('li')
+      for (let j = 0; j < headers[i].length; j++) {
+        if (j % 2 === 0) {
+          const label = document.createElement('span');
+          label.textContent = `${headers[i][j]}: `;
+          label.style.fontsSize = '1rem';
+    
+          const value = document.createElement('span');
+          value.textContent = headers[i][j + 1];
+          value.style.fontSize = '.7rem';
+          value.style.color = '#f9774b';
+          value.style.paddingLeft = '.2rem'
+    
+          li.appendChild(label);
+          li.appendChild(value);
+        }
+      }
+      ul.appendChild(li)
+      responseHeaderField.innerHTML = ''
+      responseHeaderField.appendChild(ul)
+    }
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+    responseField.value = `Error: ${error}`
+  });
+  
+  const headerUrl = document.querySelector('.baseurl')
+  headerUrl.innerText = requestHeader.baseUrl
+  const useragent = document.querySelector('.useragent')
+  useragent.innerText = requestHeader.userAgent
+  }
 });
 
 
-//https://api.dictionaryapi.dev/api/v2/entries/en/computer
-// https://jsonplaceholder.typicode.com/posts
-
-    // Current Weather
-   // https://api.openweathermap.org/data/2.5/weather?q=lagos&appid=6f54916aa6f7ec8753539793bf70288b&units=metric
