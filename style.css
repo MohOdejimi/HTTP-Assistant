@@ -29,6 +29,9 @@ header div span {
   margin-top: 3rem;
   color: white;
 }
+.open-paragraph:hover {
+  cursor: pointer;
+}
 .paragraph2 {
   padding: 0rem 2rem;
   text-decoration-line: underline;
@@ -91,7 +94,7 @@ form i {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: .7ch 0ch .5ch .8ch;
+  padding: .28rem;
 }
 #up, #down {
   padding: .4ch .5ch 0ch 2ch;
